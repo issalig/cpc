@@ -1,2 +1,2 @@
 # cpc
-My CPC stuff
+A collection of documents, software and hardware about CPC
