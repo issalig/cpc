@@ -5,12 +5,11 @@ This is the documentation of my journey into learning Z80 assembly. I typed smal
 This is **NOT** a tutorial on Z80 neither a full-detailed guide, it is a practical guide to mess around Z80 and CPC. I wish I had found a document like this but it looks that did not exist, thus I am sharing it for you not to reinvent the wheel again.
 
 ### Tools and environment
-I have used Linux but on Windows you can also do it.
-I will use WinAPE http://www.winape.net/downloads.jsp running under linux with WINE (sudo apt install wine).
+- I have used Linux but on Windows you can also do it.
+- I will use WinAPE http://www.winape.net/downloads.jsp running under linux with WINE (sudo apt install wine).
 **If you are using a non-english language some characters will be taken as accents by Linux and wont be correctly interpreted by WinAPE. You can use the Autotype function or add English keyboard layout to Linux and change it when writing in WinAPE**
-Also I will use iDSK tools https://github.com/cpcsdk/idsk but you can use similar tools.
-
-I will also use my own tool https://github.com/issalig/cpc/sw/bin2txt.py that converts machine code to ascii and viceversa.
+- Also I will use iDSK tools https://github.com/cpcsdk/idsk but you can use similar tools.
+- I will also use my OWN tool 😎 https://github.com/issalig/cpc/sw/bin2txt.py that converts machine code to ascii and viceversa.
 
 ### Numbers and formats
 Binary numbers are composed of binary digits that are 0's or 1's. The conversion to decimal is done by multiplying each digit by the i-th power of two.
@@ -77,7 +76,7 @@ SAVE "hello.bas"
 
 This will create a file with AMSDOS header (http://www.cpcwiki.eu/index.php/AMSDOS_Header) with the bytecodes for the BASIC program (https://cpctech.cpcwiki.de/docs/bastech.html)
 
-If you want to save it as ascii (and without AMSDOS header) use
+To save it as ascii (and without AMSDOS header) use the 'a' parameter
 ```basic
 SAVE "hello.txt",a
 ```
@@ -105,7 +104,7 @@ Taille du fichier : 35
 20 PRINT "Hello World!"
 ```
 
-Or just
+And it looks that the contents of hello.txt that are padded with  until reaches 1024 bytes
 ```
 iDSK hello.dsk -a hello.txt
 DSK : hello.dsk
@@ -113,11 +112,29 @@ Amsdos file : hello.txt
 Taille du fichier : 1024
 10 REM Hello
 20 PRINT "Hello World!"
-
 ------------------------------------
 ```
+Let's see it with detail. After *"* (0x22) it appers 0D 0A that are CR+LF and then comes character 1A known as SUB and sent when pressing Ctrl+Z. This byte normally used end of communication. After that all are zeroes.
 
-Of course we can also open it with our favourite text editor.
+```
+iDSK hello.dsk -h HELLO.TXT
+DSK : hello.dsk
+Amsdos file : HELLO.TXT
+#0000 31 30 20 52 45 4D 20 48 65 6C 6C 6F 0D 0A 32 30 | 10.REM.Hello..20
+#0010 20 50 52 49 4E 54 20 22 48 65 6C 6C 6F 20 57 6F | .PRINT."Hello.Wo
+#0020 72 6C 64 21 22 0D 0A 1A 00 00 00 00 00 00 00 00 | rld!"...........
+...
+#0400 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 | ................
+```
+
+Of course the mighty bin2txt.py can extract this info if you prefer this way (but remember to extract the file first with iDSK -g) 
+
+python bin2txt.py -f HELLO.TXT --totxt --hexprefix="" --sep=" " --hex --printout --number --linesize 16
+Not a valid AMSDOS header, checksum incorrect 0 2673
+0x0000 31 30 20 52 45 4d 20 48 65 6c 6c 6f 0d 0a 32 30
+0x0010 20 50 52 49 4e 54 20 22 48 65 6c 6c 6f 20 57 6f
+0x0020 72 6c 64 21 22 0d 0a 1a 00 00 00 00 00 00 00 00
+0x0400 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 
 If you load a txt file it will be interpreted as BASIC
 
