@@ -201,12 +201,13 @@ And now that we know some things about BASIC, and even we got down to the intern
 
 Simplifying, assembly is a list of statements of operation codes (mnemonics) and parameters where these parameters can be numbers or registers. If the parameter in between parentheses "()" indicates it is a memory pointer.
 
-Labels are used to reference lines of code and the assembler will assign an address to them.
+Labels are used to reference lines of code and the assembler will assign a number (address) to them so that we can reach them.
 
 ```asm
 label_init:
 ;DO THINGS
-jp label_init
+ld bc, 1       ; LoaD 1 into bc register
+jp label_init  ; go back to code at label_init address
 ```
 
 ### Registers
@@ -435,7 +436,7 @@ Yes, it is.
 
 For this example I will use code borrowed from USIFAC card and we will write our HELLO.BAS directly from asm. (USIFAC is a Serial interface board and much more. Take a look at https://www.cpcwiki.eu/forum/amstrad-cpc-hardware/usifac-iimake-your-pc-or-usb-stick-an-hdd-for-amstrad-access-dsk-and-many-more!/)
 
-It is important to remember that BASIC programs start at &170 (see memory table above). The following program takes a bytes representing a BASIC program and copies them on 170. We have already shoewn that these bytes can be extracted with iDSK hello.dsk -h hello.bas
+It is important to remember that BASIC programs start at &170 (see memory table above). The following code takes bytes representing a BASIC program and copies them on &170. 
 
 Before we commented that HL register is normally used for general purpose or **source**, DE for **DEstination** and BC for **length**. Here we have an example.
 
@@ -458,7 +459,7 @@ defb  &bf,&20,&22,&48,&65,&6c,&6c,&6f,&20,&57,&6f,&72,&6c,&64,&21,&22
 defb  &00,&00,&00
 ```
 
-Basic code can be easily extracted using bin2txt:
+Basic code can be easily extracted as asm defb lines using bin2txt:
 ```
 python bin2txt.py --file  HELLO.BAS --totxt  --prefix defb --hex --linesize 16 --printout  
 Name:  HELLO   BAS
@@ -474,7 +475,7 @@ defb  &bf,&20,&22,&48,&65,&6c,&6c,&6f,&20,&57,&6f,&72,&6c,&64,&21,&22
 defb  &00,&00,&00
 ```
 
-Now compile it, execute it with CALL, type LIST command and our Hello World! code will appear. Of course you can also RUN it.
+Now assemble it, execute it with CALL, type LIST command and our Hello World! code will appear. Of course you can also RUN it.
 
 ```
 list
@@ -496,7 +497,7 @@ And what about running the BASIC program from asm? Well, we will do this later.
 
 ### asm from BASIC
 Another way to mix BASIC and asm is to embed machine code into BASIC.
-Machine code is entered by DATA statements and a READ loop will POKE these values into memory. Then CALL at the required address and you are done.
+Machine code is entered using DATA statements and a READ loop will POKE these values into memory. Then CALL at the required address and you are done.
 
 And it is possible to automagically convert your binary file into bas using the following command
 
@@ -577,7 +578,7 @@ So the jumpblock call for bb5a is CF FE 93 where CF corresponds to RST 1 instruc
               main firmware jumpblock
 ```
 
-Thus, 93 fe corresponds to value 93fe that after removing bit15 and bit14 results in address 13fe. If you are interested in the TXT OUTPUT routine check firmware disassembly at &13fe http://cpctech.cpc-live.com/docs/os.asm
+Thus, fe 93 corresponds to value 93fe that after removing bit15 and bit14 results in address 13fe. If you are interested in the TXT OUTPUT routine check firmware disassembly at &13fe http://cpctech.cpc-live.com/docs/os.asm
 
 ```
       93       FE
@@ -632,7 +633,7 @@ READY
 but if you Pause on WinAPE and look for "hello" (F7) it will in lowercase.
 
 
-We can also use parameters in CALL and for example CALL &1200,0 to restore the original function. Register A has the number of parameters, and IX has the list of parameters. The first parameter is stored in IX(0) and IX(1), the second in IX(2) and IX(3) and so on.  (See more info on CALL parameters http://www.cpcwiki.eu/index.php?title=Technical_information_about_Locomotive_BASIC&mobileaction=toggle_view_desktop)
+We can also use parameters in CALL and for example CALL &1200,0 to restore the original function. Register A has the number of parameters, and IX has the list of parameters. The first parameter is stored in IX(0) and IX(1), the second in IX(2) and IX(3) and so on.  (See more info on CALL parameters http://www.cpcwiki.eu/index.php?title=Technical_information_about_Locomotive_BASIC)
 
 ``` asm	      
 org &1200
