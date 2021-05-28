@@ -4,11 +4,15 @@
 This is the documentation of my journey into learning Z80 assembly. I typed small BASIC programs back in the day and now I am spicing up with Z80 wizardry.
 This is **NOT** a tutorial on Z80 neither a full-detailed guide, it is a practical guide to mess around Z80 and CPC. I wish I had found a document like this but it looks that did not exist, thus I am sharing it for you not to reinvent the wheel again.
 
+### Tools and environment
 I have used Linux but on Windows you can also do it.
 I will use WinAPE http://www.winape.net/downloads.jsp running under linux with WINE (sudo apt install wine).
 **If you are using a non-english language some characters will be taken as accents by Linux and wont be correctly interpreted by WinAPE. You can use the Autotype function or add English keyboard layout to Linux and change it when writing in WinAPE**
 Also I will use iDSK tools https://github.com/cpcsdk/idsk but you can use similar tools.
 
+I will also use my own tool https://github.com/issalig/cpc/sw/bin2txt.py that converts machine code to ascii and viceversa.
+
+### Numbers and formats
 Binary numbers are composed of binary digits that are 0's or 1's. The conversion to decimal is done by multiplying each digit by the i-th power of two.
 The rightmost bit is the least significative bit (LSB) and will have index 0, on the contrary, the leftmost bit is the most signigicative (MSB) and will have the highest index.
 For example and 8bit binary number (separated in groups of 4 to be more readable) 0001 0001 corresponds to 1\*2^4+1\*2^0=16+1=17
@@ -17,6 +21,7 @@ Hexadecimal is a numbering system that uses base 16 system and offers a compact 
 
 For hexadecimal numbers I will use &,#,$,h indistinctively or any other symbol normally used for that. Locomotive BASIC uses &.
 
+### Resources
 These are some of resources I used to on my way to write this.
 - CPCWiki, a helpful community https://www.cpcwiki.eu/forum/programming/
 - ACPC.me, full of documentation, books, etc, ... https://acpc.me
