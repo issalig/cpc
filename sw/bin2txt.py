@@ -160,6 +160,8 @@ def bin2txt(data):
     sys.stdout = output 
     for i in range(len(data)):
         if not(i%linesize):  #print linesize bytes per line
+            if (args.number): # print number of byte in hexviewer style
+                print("{0:#0{1}x}".format(i,6),end="")
             if (args.prefix): #print prefix in the beginning of line
                 print(args.prefix, " ",end="")
         if args.hex:
@@ -208,8 +210,7 @@ def txt2bin(data):
             val=int(hex_string,16)
             values.append(val)
         #integer value    
-        else:
-            print("t", token,"t")
+        else:            
             val=int(token)
             values.append(val)
                         
@@ -231,6 +232,7 @@ def main():
     #TXT/BIN options
     parser.add_argument('--totxt', '-t', help='Binary to ascii', action='store_true')
     parser.add_argument('--tobin', '-b', help='ascii to binary', action='store_true')
+    parser.add_argument('--number', help='Shows byte number as hexviewers do', action='store_true')
     parser.add_argument('--prefix', '-p', help='Line prefix string defb, data, etc, ...')
     parser.add_argument('--hex', '-x', help='Hex conversion (integer by default', action='store_true')
     parser.add_argument('--hexprefix', '-e', default="&", help="& # 0x or whatever")
