@@ -9,7 +9,7 @@ This is **NOT** a tutorial on Z80 neither a full-detailed guide, it is a practic
 - I will use WinAPE http://www.winape.net/downloads.jsp running under linux with WINE (sudo apt install wine).
 **If you are using a non-english language some characters will be taken as accents by Linux and wont be correctly interpreted by WinAPE. You can use the Autotype function or add English keyboard layout to Linux and change it when writing in WinAPE**
 - Also I will use iDSK tools https://github.com/cpcsdk/idsk but you can use similar tools.
-- I will also use my OWN tool 😎 https://github.com/issalig/cpc/sw/bin2txt.py that converts machine code to ascii and viceversa.
+- I will also use my OWN tool 😎 https://github.com/issalig/cpc/blob/main/sw/bin2txt.py that converts machine code to ascii and viceversa.
 
 ### Numbers and formats
 Binary numbers are composed of binary digits that are 0's or 1's. The conversion to decimal is done by multiplying each digit by the i-th power of two.
