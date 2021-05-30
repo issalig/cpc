@@ -275,8 +275,9 @@ For more information on Z80 instructions I find this link extremely clear http:/
 The following code prints the "Hello World!" string and have full explanations of what it does.
 
 ```asm
+
         TXT_OUTPUT      equ &bb5a 
-	                        ; TXT OUTPUT Output a character or controlcode to the Text VDU
+	                            ; TXT OUTPUT Output a character or controlcode to the Text VDU
                                 ; Info on firmware calls www.cpcwiki.eu/imgs/7/73/S968se14.pdf
 
         org      &1200          ; our code will start at &1200
@@ -284,7 +285,7 @@ The following code prints the "Hello World!" string and have full explanations o
 main:                         
         ld      hl,message      ; load address of string in HL
         call    printString     ; print it
-        ret
+        ret		                ; do not forget to return
 
 printString:
         ld      a,(hl)          ; load char index stored in HL into A
@@ -296,6 +297,7 @@ printString:
 
 message:
         defb    "Hello World!",0 ; String is ended with 0 and prinString will stop on 0
+
 ```
 
 It is always safe to put defb after code (especially ret or jump), so this data will not be executed.
@@ -309,30 +311,31 @@ WinAPE shows the binary digits generated for this program
 ```asm
 WinAPE Z80 Assembler V1.0.13
 
-000001  0000  (BB5A)                TXT_OUTPUT      equ &bb5a 
-000002  0000                	                        ; TXT OUTPUT Output a character or controlcode to the Text VDU
-000003  0000                                                ; Info on firmware calls www.cpcwiki.eu/imgs/7/73/S968se14.pdf
-000005  0000  (1200)                org      &1200          ; our code will start at &1200
-000007  1200                main
-000008  1200  21 10 12              ld      hl,message      ; load address of string in HL
-000009  1203  CD 07 12              call    printString     ; print it
-000010  1206  C9                    ret
-000012  1207                printString
-000013  1207  7E                    ld      a,(hl)          ; load char index stored in HL into A
-000014  1208  BF                    cp      0               ; if 0 then Z flag will be set
-000015  1209  C8                    ret     z               ; returns if Z flag is set
-000016  120A  23                    inc     hl              ; hl=hl+1
-000017  120B  CD 5A BB              call    TXT_OUTPUT      ; call TXT_OUTPUT
-000018  120E  18 F7                 jr      printString
-000020  1210                message
-000021  1210  48 65 6C 6C           defb    "Hello World!",0 ; String is ended with 0 and prinString will stop on 0
-        1214  6F 20 57 6F 
-        1218  72 6C 64 21 
-        121C  00 
+000002  0000  (BB5A)                TXT_OUTPUT      equ &bb5a 
+000003  0000                	                        ; TXT OUTPUT Output a character or controlcode to the Text VDU
+000004  0000                                                ; Info on firmware calls www.cpcwiki.eu/imgs/7/73/S968se14.pdf
+000006  0000  (1200)                org      &1200          ; our code will start at &1200
+000008  1200                main
+000009  1200  21 11 12              ld      hl,message      ; load address of string in HL
+000010  1203  CD 07 12              call    printString     ; print it
+000011  1206  C9                    ret		     ; do not forget to return
+000013  1207                printString
+000014  1207  7E                    ld      a,(hl)          ; load char index stored in HL into A
+000015  1208  FE 00                 cp      0               ; if 0 (last char) then Z flag will be set
+000016  120A  C8                    ret     z               ; returns if Z flag is set
+000017  120B  23                    inc     hl              ; hl=hl+1
+000018  120C  CD 5A BB              call    TXT_OUTPUT      ; call TXT_OUTPUT
+000019  120F  18 F6                 jr      printString
+000021  1211                message
+000022  1211  48 65 6C 6C           defb    "Hello World!",0 ; String is ended with 0 and prinString will stop on 0
+        1215  6F 20 57 6F 
+        1219  72 6C 64 21 
+        121D  00 
+
 ```
 
-The generated code goes from &1200 to &121C, having a size of &1D (20 in decimal) bytes.
-The first instruction at address &1200 is 21 10 12 that corresponds to LD HL,nn instruction (code &21) and address 1210 (first byte after operation code 10 is least significant one). You can check instruction codes at http://map.grauw.nl/resources/z80instr.php
+The generated code goes from &1200 to &121D, having a size of &1E (30 in decimal) bytes.
+The first instruction at address &1200 is 21 11 12 that corresponds to LD HL,nn instruction (code 21) and address 1211 (first byte after operation code 11 is least significant one). You can check instruction codes at http://map.grauw.nl/resources/z80instr.php
 
 And to run it call starting address (&1200) from BASIC as we set org &1200 in the asm code.
 ```basic
@@ -340,10 +343,10 @@ call &1200
 ```
 If everything was fine, now you are seeing "Hello world!" on the screen.
 
-Now save as a binary file starting at &1200 and size &1D (29).
-save "hello.bin",b,&1200,&1D
+Now save as a binary file starting at &1200 and size &1D (30).
+save "hello.bin",b,&1200,&1E
 
-But an easier way is to tell the assembler to write it for us. Then, we can add it to a dsk file with WinAPE or iDSK.
+But an easier way is do it from the assembler with the write command. Then, we can add it to a dsk file with WinAPE or iDSK.
 
 ```asm
 write "hello.bin"
@@ -355,28 +358,27 @@ iDSK can disassemble the program but it does not know that there is a string sta
 iDSK hello.dsk -z hello.bin
 DSK : hello.dsk
 Amsdos file : hello.bin
-Taille du fichier : 29
-1200 21 10 12       LD HL,1210
+Taille du fichier : 30
+1200 21 11 12       LD HL,1211
 1203 CD 07 12       CALL 1207
 1206 C9             RET
 1207 7E             LD A,(HL)
-1208 BF             CP A
-1209 C8             RET Z
-120A 23             INC HL
-120B CD 5A BB       CALL BB5A    ; TXT_OUTPUT
-120E 18 F7          JR 1207      ; This jump prevents going into defb area
-1210 48             LD C,B       ; This is a string but iDSK does not know it
-1211 65             LD H,L       ; and interprets it as instructions
-1212 6C             LD L,H
+1208 FE 00          CP 00
+120A C8             RET Z
+120B 23             INC HL
+120C CD 5A BB       CALL BB5A    ; TXT_OUTPUT
+120F 18 F6          JR 1207
+1211 48             LD C,B
+1212 65             LD H,L
 1213 6C             LD L,H
-1214 6F             LD L,A
-1215 20 57          JR NZ,126E
-1217 6F             LD L,A
-1218 72             LD (HL),D
-1219 6C             LD L,H
-121A 64             LD H,H
-121B 21 00 1A       LD HL,1A00
-
+1214 6C             LD L,H
+1215 6F             LD L,A
+1216 20 57          JR NZ,126F
+1218 6F             LD L,A
+1219 72             LD (HL),D
+121A 6C             LD L,H
+121B 64             LD H,H
+121C 21 00 1A       LD HL,1A00
 ```
 iDSK can also show and hexadecimal view of the file.
 
@@ -384,8 +386,9 @@ iDSK can also show and hexadecimal view of the file.
 iDSK hello.dsk -h hello.bin
 DSK : hello.dsk
 Amsdos file : hello.bin
-#0000 21 10 12 CD 07 12 C9 7E BF C8 23 CD 5A BB 18 F7 | !.........#.Z...
-#0010 48 65 6C 6C 6F 20 57 6F 72 6C 64 21 00 1A 00 00 | Hello.World!....
+#0000 21 11 12 CD 07 12 C9 7E FE 00 C8 23 CD 5A BB 18 | !..........#.Z..
+#0010 F6 48 65 6C 6C 6F 20 57 6F 72 6C 64 21 00 1A 6F | .Hello.World!..o
+
 ```
 
 bin2txt.py script can also extract hex values that can be pasted on  https://onlinedisassembler.com
@@ -396,7 +399,7 @@ f6 48 65 6c 6c 6f 20 57 6f 72 6c 64 21 00
 ```
 
 Ok, we saved the file, switch off the computer, but next day we want to load it.
-First, we need reserve memory and as we will be using the program at &1200, the last BASIC memory will be one bye less, i.e. &11FF. Then we LOAD an CALL.
+First, we need reserve memory and as we will be using the program at &1200, the last BASIC memory will be one byte less, i.e. &11FF. Then we LOAD an CALL.
 
 ```basic
 MEMORY &11FF
@@ -441,7 +444,7 @@ It is important to remember that BASIC programs start at &170 (see memory table 
 Before we commented that HL register is normally used for general purpose or **source**, DE for **DEstination** and BC for **length**. Here we have an example.
 
 ```asm
-data_size equ 39                                ; size of BASIC file, we know it is 39 bytes
+data_size equ 35                                ; size of BASIC file
 addr    equ &170                                ; BASIC files normally start at 170, let's write in this area
 org	&1200                                   ; and store our program in &1200
 
@@ -505,7 +508,7 @@ And it is possible to automagically convert your binary file into bas using the 
 python bin2txt.py --file  hello.bin --totxt  --prefix="DATA " --hex --hexprefix=""  --linesize 16 --printout  --basicLoader --callAddress "&1200"
 ```
 
-And here is the results
+And here are the results
 
 ```basic
 10 REM MACHINE CODE LOADER
