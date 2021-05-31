@@ -543,6 +543,24 @@ DATA  246, 72,101,108,108,111, 32, 87,111,114,108,100, 33,  0
 - https://acpc.me/ACME/LITTERATURE_LIVRES/[ENG]ENGLISH/ARGUS_BOOK/Assembly_language_programming_for_the_AMSTRAD_CPC464-664-6128(AP-DJ_STEPHENSON)(acme).pdf
 
 
+## C coding on CPC
+If you like me are used to code in C, I am sure you will find this section interesting. I will use z88dk compiler http://nightly.z88dk.org/  to compile the well-know Hello World example.
+
+```c
+#include <stdio.h>
+
+main()
+{
+  printf("Hello world!");
+  fgetc_cons();
+}
+```
+
+zcc +cpc -lndos -o hello.bin hello.c
+
+It is possible to create the file with an AMSDOs header.
+zcc +cpc -create-app -lndos -zorg=384 -o z88dk01.bin z88dk01.c
+
 ## Jumpblock
 
 [Up](#CPC-Basic-and-Z80-adventures) [Previous](#Mixing-asm-and-BASIC) [Next](#RSX)
@@ -689,7 +707,7 @@ ret
 ## RSX
 [Up](#Index) [Previous](#Jumpblock) [Next](#Rom)
 
-We already know about BASIC, asm and jumpblocks where we bypassed TXT OUTPUT. Let's dive even deeper and explore RSX.
+We already know about BASIC internal coding, asm and jumpblocks where we bypassed TXT OUTPUT. Let's dive even deeper and explore RSX.
 
 RSX commands are preceded by the pipe "|" symbol and are a way to extend BASIC commands. Probably you know |TAPE and |DISC an even |BASIC but now we have the opportunity to implement our own RSX.
 
