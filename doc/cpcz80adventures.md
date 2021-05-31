@@ -717,6 +717,8 @@ defb &cf,&fe,&93 ; call original jumpblock for TXT OUTPUT
 
 ret
 ```
+CALL function can also get the results into a variable and @ is used to indicate it
+
 
 ## RSX
 [Up](#Index) [Previous](#Jumpblock) [Next](#Rom)
