@@ -494,8 +494,34 @@ Hello World!
 Ready
 ```
 
-And what about running the BASIC program from asm? Well, we will do this later.
+And what about running the BASIC program from asm? I will get this cool trick from @ikonsgr  (https://www.cpcwiki.eu/forum/amstrad-cpc-hardware/usifac-iimake-your-pc-or-usb-stick-an-hdd-for-amstrad-access-dsk-and-many-more!/msg200839/#msg200839)
 
+run_code is defined by the following code
+```asm
+defb 14,0,33,149,234,205,27,0
+```
+we will convert it to binary 
+```
+python ../sw/bin2txt.py --file run_code.asm --tobin --out run_code.bin
+iDSK hello.dsk -i run_code.bin
+iDSK hello.dsk -z run_code.bin
+```
+
+and disassemble it
+```
+iDSK hello.dsk -i run_code.bin
+iDSK hello.dsk -z run_code.bin
+DSK : hello.dsk
+Amsdos file : run_code.bin
+Taille du fichier : 8
+0000 0E 00          LD C,00
+0002 21 95 EA       LD HL,EA95
+0005 CD 1B 00       CALL 001B    ; KL_FAR_PCHL
+```
+001B is KL_FAR_PCHL that calls a routine given by the far address in HL &EA95 and C the ROM select byte &00
+Our ROM select byte is 00, thus, it is in the range from &00 to &FB - select the given upper ROM, enable the upper ROM and disable the lower ROM. (For more info on firmware calls check this link https://www.grimware.org/doku.php/documentations/firmware/guide/jumpblock)
+
+Address EA95 is inside the RUN code (https://cpctech.cpcwiki.de/docs/basic.asm)
 
 
 ### asm from BASIC
