@@ -531,6 +531,9 @@ https://www.cpcwiki.eu/forum/programming/asm-source-code/msg158311/#msg158311
 
 https://github.com/M4Duke/m4rom/blob/a8a029134bc2412896c71dcdb4fedba9d417128d/M4ROM.s#L1939
 
+http://cpctech.cpc-live.com/source/runbas.asm
+
+
 ### asm from BASIC
 Another way to mix BASIC and asm is to embed machine code into BASIC.
 Machine code is entered using DATA statements and a READ loop will POKE these values into memory. Then CALL at the required address and you are done.
