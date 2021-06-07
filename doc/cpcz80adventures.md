@@ -523,7 +523,9 @@ Our ROM select byte is 00, thus, it is in the range from &00 to &FB - select the
 
 Address EA95 is inside the RUN code (https://cpctech.cpcwiki.de/docs/basic.asm)
 
+ROM DECODING FOR 464
 https://acpc.me/ACME/LITTERATURE_LIVRES/[GER]GERMAN/MARKT-UND-TECHNIK/ROM-Listing_CPC464-664-6128(Jorn_W_ANNECK_Till_MOSSAKOWSKI).pdf
+
 
 https://www.cpcwiki.eu/forum/programming/stuck-with-run-basic-program-from-asm/msg65327/#msg65327
 
@@ -532,6 +534,8 @@ https://www.cpcwiki.eu/forum/programming/asm-source-code/msg158311/#msg158311
 https://github.com/M4Duke/m4rom/blob/a8a029134bc2412896c71dcdb4fedba9d417128d/M4ROM.s#L1939
 
 http://cpctech.cpc-live.com/source/runbas.asm
+
+
 
 
 ### asm from BASIC
