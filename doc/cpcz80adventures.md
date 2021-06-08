@@ -494,7 +494,61 @@ Hello World!
 Ready
 ```
 
-And what about running the BASIC program from asm? I will get this cool trick from @ikonsgr  (https://www.cpcwiki.eu/forum/amstrad-cpc-hardware/usifac-iimake-your-pc-or-usb-stick-an-hdd-for-amstrad-access-dsk-and-many-more!/msg200839/#msg200839)
+And what about running the BASIC program from asm?. You can look at the code now or wait until you know some things about jumblock and ROMs.
+
+```asm
+;execute basic program from asm
+
+kl_rom_select equ &B90F
+basic_addr equ &0170
+
+org &A000
+
+	;copy basic program into basic space at &170
+	ld hl, basic_program
+	ld de, basic_addr
+	ld bc, basic_program_end - basic_program
+	ld (length), bc
+	ldir
+	
+	ld hl, basic_program_end - basic_program ;prepare hl with start_addr + size
+	ld de, basic_addr
+	add hl, de
+	;basic_version:
+	ld c, 0
+	call kl_rom_select 		;select upper rom given by C -> upper rom 0 -> BASIC
+	ld a,(&c002) 		 ;rom starts at c000; basic 1.0 rom byte 2 is 0; basic 1.1 rom byte 2 is 2;
+	cp 0
+	jp z,cpc464
+
+	;memory patch, copy basic_start_addr + size   4 times
+	ld (&ae66), hl 		;address of start of variables for  cpc6128-664
+	ld (&ae68), hl
+	ld (&ae6a), hl
+	ld (&ae6c), hl
+	cp 1
+	jp z, cpc664
+	jp &ea78        		;RUN routine for BASIC CPC6128
+	.cpc664
+	jp &ea7d        		;RUN routine for BASIC CPC664
+	.cpc464
+	ld (&ae83), hl		;address of start of variables for  cpc464
+	ld (&ae85), hl
+	ld (&ae87), hl
+	ld (&ae89), hl
+	jp &e9bd       		 ;RUN routine for BASIC CPC464
+
+length:	defw 0			;we will save the length value here
+
+basic_program:
+	defb  &0c,&00,&0a,&00,&c5,&20,&48,&65,&6c,&6c,&6f,&00,&15,&00,&14,&00
+	defb  &bf,&20,&22,&48,&65,&6c,&6c,&6f,&20,&57,&6f,&72,&6c,&64,&21,&22
+	defb  &00,&00,&00
+basic_program_end:
+```
+
+There are other options to do this
+I will get this cool trick from @ikonsgr  (https://www.cpcwiki.eu/forum/amstrad-cpc-hardware/usifac-iimake-your-pc-or-usb-stick-an-hdd-for-amstrad-access-dsk-and-many-more!/msg200839/#msg200839)
 
 run_code is defined by the following code
 ```asm
@@ -534,8 +588,6 @@ https://www.cpcwiki.eu/forum/programming/asm-source-code/msg158311/#msg158311
 https://github.com/M4Duke/m4rom/blob/a8a029134bc2412896c71dcdb4fedba9d417128d/M4ROM.s#L1939
 
 http://cpctech.cpc-live.com/source/runbas.asm
-
-
 
 
 ### asm from BASIC
