@@ -494,7 +494,7 @@ Hello World!
 Ready
 ```
 
-And what about running the BASIC program from asm?. You can look at the code now or wait until you know some things about jumblock and ROMs and go directly to the next section (### asm-from-BASIC)
+And what about running the BASIC program from asm?. You can look at the code now or wait until you know some things about jumblock and ROMs and go directly to the next section (#asm-from-BASIC)
 
 ```asm
 ;execute basic program from asm
@@ -550,15 +550,12 @@ basic_program_end:
 From the firmware guide (see table below) we know that &AE66, &AE68, &AE6A and &AE6C in CPC6128 are used to store the start address of BASIC variables. On startup (no BASIC program) these are placed at &172 being &170 the start address. These 2 bytes are 0000 indicating that first line length of the BASIC program is 0, thus, space is free from &172. In particular in our Hello World BASIC program this will be &170 + &23 (35) = &193
 
 
-6128  | 464   | length | description
--------------------------------------
-&AE66 | &AE83 | 2    | as &AE68
-&AE68 | &AE85 | 2    | address of start of Variables and DEF FNs
-      |       |      |   area
-&AE6A | &AE87 | 2    | address of start of Arrays area (where
-      |       |      |   next Variable or DEF FN entry is placed)
-&AE6C | &AE89 | 2    | address of start of free space (where
-      |       |      |   next Array entry is placed)
+|6128  | 464   | length | description |
+|------|-------|--------|-------------|
+|&AE66 | &AE83 | 2    | as &AE68|
+|&AE68 | &AE85 | 2    | address of start of Variables and DEF FNs area|
+|&AE6A | &AE87 | 2    | address of start of Arrays area (where next Variable or DEF FN entry is placed) |
+|&AE6C | &AE89 | 2    | address of start of free space (where next Array entry is placed)|
 	   
 
 
