@@ -160,7 +160,7 @@ Amsdos file : HELLO.BAS
 The command above does not show the first 128 bytes (AMSDOS header) and below you have an explanation of the BASIC bytecode.
 
 ```
-0c 00                          ; length of data 12 (&0c) bytes
+0c 00                          ; length of data 12 (&0c) bytes, it uses 2 bytes so max length is FFFF
 0a 00                          ; line number 10 (&0a)
 c5                             ; c5 is REM code
 20 48 65 6c 6c 6f              ; string ' Hello' , 20 is blank char and so on
@@ -547,8 +547,24 @@ basic_program:
 basic_program_end:
 ```
 
-There are other options to do this
-I will get this cool trick from @ikonsgr  (https://www.cpcwiki.eu/forum/amstrad-cpc-hardware/usifac-iimake-your-pc-or-usb-stick-an-hdd-for-amstrad-access-dsk-and-many-more!/msg200839/#msg200839)
+From the firmware guide (see table below) we know that &AE66, &AE68, &AE6A and &AE6C in CPC6128 are used to store the start address of BASIC variables. On startup (no BASIC program) these are placed at &172 being &170 the start address. These 2 bytes are 0000 indicating that first line length of the BASIC program is 0, thus, space is free from &172. In particular in our Hello World BASIC program this will be &170 + &23 (35) = &193
+
+
+6128  | 464   | length | description
+-------------------------------------
+&AE66 | &AE83 | 2    | as &AE68
+&AE68 | &AE85 | 2    | address of start of Variables and DEF FNs
+      |       |      |   area
+&AE6A | &AE87 | 2    | address of start of Arrays area (where
+      |       |      |   next Variable or DEF FN entry is placed)
+&AE6C | &AE89 | 2    | address of start of free space (where
+      |       |      |   next Array entry is placed)
+	   
+
+
+There are other options to do this. In particular, @ikonsgr sets file type to 0 and jumps in the middle (&ea95 in 6128) of the RUN function (https://www.cpcwiki.eu/forum/amstrad-cpc-hardware/usifac-iimake-your-pc-or-usb-stick-an-hdd-for-amstrad-access-dsk-and-many-more!/msg200839/#msg200839)
+
+Concretely, he is caling EA95 by means of a far call on 001B.
 
 run_code is defined by the following code
 ```asm
