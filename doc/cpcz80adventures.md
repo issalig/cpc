@@ -494,7 +494,7 @@ Hello World!
 Ready
 ```
 
-And what about running the BASIC program from asm?. You can look at the code now or wait until you know some things about jumblock and ROMs.
+And what about running the BASIC program from asm?. You can look at the code now or wait until you know some things about jumblock and ROMs and go directly to the next section (### asm-from-BASIC)
 
 ```asm
 ;execute basic program from asm
@@ -562,15 +562,15 @@ From the firmware guide (see table below) we know that &AE66, &AE68, &AE6A and &
 	   
 
 
-There are other options to do this. In particular, @ikonsgr sets file type to 0 and jumps in the middle (&ea95 in 6128) of the RUN function (https://www.cpcwiki.eu/forum/amstrad-cpc-hardware/usifac-iimake-your-pc-or-usb-stick-an-hdd-for-amstrad-access-dsk-and-many-more!/msg200839/#msg200839)
+There are other options to do this. In particular, @ikonsgr sets file type to 0 and jumps in the middle (&ea95 in 6128 https://cpctech.cpcwiki.de/docs/basic.asm) of the RUN function (https://www.cpcwiki.eu/forum/amstrad-cpc-hardware/usifac-iimake-your-pc-or-usb-stick-an-hdd-for-amstrad-access-dsk-and-many-more!/msg200839/#msg200839)
+In this case, it makes used of call 001B known as KL_FAR_PCHL that calls a routine given by the far address in HL &EA95 and C the ROM select byte &00. Here, ROM select byte is 00, thus, it is in the range from &00 to &FB - select the given upper ROM, enable the upper ROM and disable the lower ROM. (For more info on firmware calls check this link https://www.grimware.org/doku.php/documentations/firmware/guide/jumpblock)
 
-Concretely, he is caling EA95 by means of a far call on 001B.
 
 run_code is defined by the following code
 ```asm
 defb 14,0,33,149,234,205,27,0
 ```
-we will convert it to binary 
+we will convert it to binary (it can also be done assembling it with WinAPE)
 ```
 python ../sw/bin2txt.py --file run_code.asm --tobin --out run_code.bin
 iDSK hello.dsk -i run_code.bin
@@ -588,22 +588,120 @@ Taille du fichier : 8
 0002 21 95 EA       LD HL,EA95
 0005 CD 1B 00       CALL 001B    ; KL_FAR_PCHL
 ```
-001B is KL_FAR_PCHL that calls a routine given by the far address in HL &EA95 and C the ROM select byte &00
-Our ROM select byte is 00, thus, it is in the range from &00 to &FB - select the given upper ROM, enable the upper ROM and disable the lower ROM. (For more info on firmware calls check this link https://www.grimware.org/doku.php/documentations/firmware/guide/jumpblock)
+The final code will be this
+```asm
+kl_rom_select equ &B90F
+data_size equ 35                                ; size of BASIC file
+addr    equ &170                                ; BASIC files normally start at 170, let's write in this area
+org	&1200                                   ; and store our program in &1200
 
-Address EA95 is inside the RUN code (https://cpctech.cpcwiki.de/docs/basic.asm)
+main:
+                                                ; we will use 16-bit registers (hl, de, ... to deal with memory addresses that take 2 bytes &AABB)
+	ld	hl, basic_code                  ; hl = address where basic_code is starts, i.e. org + something but the assembler does it for us
+	ld 	de, addr                        ; de = &170
+	ld	bc, data_size                   ; bc = data size
+	ldir                                    ; ldir copies a block from hl address to de address of length bc (i.e. memcpy)
+                                             ; do not forget to go back from call
 
-ROM DECODING FOR 464
-https://acpc.me/ACME/LITTERATURE_LIVRES/[GER]GERMAN/MARKT-UND-TECHNIK/ROM-Listing_CPC464-664-6128(Jorn_W_ANNECK_Till_MOSSAKOWSKI).pdf
+; Address of start of variables (&AE66-67 in cpc6128-664, &AE83-84 in cpc464)
+	;basic_version:
+	ld c, 0
+	call kl_rom_select 		;select upper rom given by C -> upper rom 0 -> BASIC
+	ld a,(&c002) 		;basic 1.0 byte 2 is 0; basic 1.1 664 is 1; basic 1,1 byte 2 is 2;  
+
+	;other way would be to get byte 6 of Lower rom    &80->464  &7B-> 664  &91->6128
+
+	ld (basic_version), a
+	cp 0
+	jr z,cpc464
+	ld	l, &66  ; basic 1.1 at AE66
+	ld a, &29
+	ld (file_type), a
+
+	ld (basic_version), a
+	cp 1
+	jr z,cpc664
+	
+	ld hl, run_entry 
+	ld (hl) , &95     ;ea95 for 6128
+	inc hl
+	ld (hl) , &ea
+	jr patch_mems
+cpc664:
+	ld hl, run_entry 
+	ld (hl) , &7d     ;ea7d for 664	
+	inc hl
+	ld (hl) , &ea
+	jr patch_mems
+
+cpc464:
+	ld	l, &83  ; basic 1.0 at AE83
+	ld a, &42
+	ld (file_type), a
+	
+	ld hl, run_entry 
+	ld (hl) , &db
+	inc hl
+	ld (hl) , &e9
 
 
-https://www.cpcwiki.eu/forum/programming/stuck-with-run-basic-program-from-asm/msg65327/#msg65327
+patch_mems:
+	ld	h,&ae  ;  hl =AExx
+	ld	de, data_size+&170  ;end of data
+	ld	B,4  ; 4 bytes
+	
+patch_loop:			
+	                                ;write data_size+170  to AExx 
+	ld	(hl),e	
+	inc	hl
+	ld	(hl),d
+	inc	hl
+	dec	b
+	jr	nz,patch_loop
+	ld	a,l	
+	jr	run_command
+	ret
 
-https://www.cpcwiki.eu/forum/programming/asm-source-code/msg158311/#msg158311
+run_command:
+	;ld	hl,&ae29		; file type 0   
+	;ld	hl,&ae42		; file type 0   cpc464
+	ld	h, &ae
+	ld	a, (file_type)
+	ld	l, a
+	ld 	a,0
+	ld	(hl),a
+	ld	hl, run_code     
+	ld 	de, &7900
+	ld	bc, 9  ;  run code size,
+	ldir
+	jp	&7900 ; copy run code in memory and call it
 
-https://github.com/M4Duke/m4rom/blob/a8a029134bc2412896c71dcdb4fedba9d417128d/M4ROM.s#L1939
+run_code:
+	ld c, 0
+	;ld hl, &ea95   ;6128
+	;ld hl, &e9db    ;464
+	ld hl, (run_entry)
+	call &001b
+	ret
 
-http://cpctech.cpc-live.com/source/runbas.asm
+
+basic_code: ;35 bytes long
+defb  &0c,&00,&0a,&00,&c5,&20,&48,&65,&6c,&6c,&6f,&00,&15,&00,&14,&00
+defb  &bf,&20,&22,&48,&65,&6c,&6c,&6f,&20,&57,&6f,&72,&6c,&64,&21,&22
+defb  &00,&00,&00
+basic_code_end:
+
+basic_version: defb 0
+file_type: defb 0
+run_entry: defw 0
+```
+
+### References
+- https://acpc.me/ACME/LITTERATURE_LIVRES/[GER]GERMAN/MARKT-UND-TECHNIK/ROM-Listing_CPC464-664-6128(Jorn_W_ANNECK_Till_MOSSAKOWSKI).pdf
+- https://www.cpcwiki.eu/forum/programming/stuck-with-run-basic-program-from-asm/msg65327/#msg65327
+- https://www.cpcwiki.eu/forum/programming/asm-source-code/msg158311/#msg158311
+- https://github.com/M4Duke/m4rom/blob/a8a029134bc2412896c71dcdb4fedba9d417128d/M4ROM.s#L1939
+- http://cpctech.cpc-live.com/source/runbas.asm
 
 
 ### asm from BASIC
