@@ -784,6 +784,12 @@ http://www.cpcwiki.eu/index.php/SDCC_and_CPC
 
 In the examples above you have noticed that we have used CALL &XXXX. These are calls to utilities provided by the firmware such as printing a char in screen. In particular, this function is called from &BB5A and is known as TXT OUTPUT. Different computers can have different addresses for the firmware function but a solution to have a common entry point is to share a common address and then jump from there to the routine code. This set of jumps is known as jumpblock.
 
+There are four jumpblocks: 
+ - The main firmware jumpblock that allows the user to call most firmware routines. 
+ - The second jumpblock is the indirections jumpblock. The entries in this jumpblock are used by the firmware at key moments in order to allow the user
+to alter the action of the firmware. 
+ - The last two jumpblocks are rather special. They are to do with the Kernel and allow ROMs to be enabled and routines in ROMs to be called.
+
 Jumpblock is located at B100-BFFF. For more info check Soft968 Chapter 2. ROMs, RAM and the Restart Instructions (http://www.cpcwiki.eu/imgs/f/f6/S968se02.pdf)
  Chapter 14. Firmware jumpblocks https://cpctech.cpcwiki.de/docs/manual/s968se14.pdf and Chapter 18 The Low Kernel Jumpblock .https://cpctech.cpcwiki.de/docs/manual/s968se18.pdf
  
@@ -799,7 +805,7 @@ The instructions executed when calling &bb5a can be obtained with this BASIC cod
 CF FE 93
 ```
 
-So the jumpblock call for bb5a is CF FE 93 where CF corresponds to RST 1 instruction that jumps to &0008 where resides LOW JUMP. The next two bytes (FE 93) are interpreted as the destination address where the last significant byte is first (see http://www.cantrell.org.uk/david/tech/cpc/cpc-firmware/firmware.pdf pg.38). RST instruction is used to jump to an address in just 1 cycle and is equivalent to CALL &00XX. 
+So the jumpblock call for BB5A is CF FE 93 where CF corresponds to RST 1 instruction that jumps to &0008 where resides LOW JUMP. The next two bytes (FE 93) are interpreted as the destination address where the last significant byte is first (see http://www.cantrell.org.uk/david/tech/cpc/cpc-firmware/firmware.pdf pg.38). RST instruction is used to jump to an address in just 1 cycle and is equivalent to CALL &00XX. 
 
 ```
 001   &0008   LOW JUMP (RST 1)
