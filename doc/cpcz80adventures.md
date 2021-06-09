@@ -786,8 +786,10 @@ In the examples above you have noticed that we have used CALL &XXXX. These are c
 
 Jumpblock is located at B100-BFFF. For more info check Soft968 Chapter 2. ROMs, RAM and the Restart Instructions (http://www.cpcwiki.eu/imgs/f/f6/S968se02.pdf)
  Chapter 14. Firmware jumpblocks https://cpctech.cpcwiki.de/docs/manual/s968se14.pdf and Chapter 18 The Low Kernel Jumpblock .https://cpctech.cpcwiki.de/docs/manual/s968se18.pdf
+ 
+Low Kernel Jumpblock is copied into RAM from the ROM during power-up initialization since all the entries supplied must be available whether the lower ROM is enabled or not, the area is copied into RAM. And this will let us PEEK those bytes.
 
-With this BASIC code we get the instructions executed when calling &bb5a (or you can "Pause" WinAPE and go to address &bb5a).
+The instructions executed when calling &bb5a can be obtained with this BASIC code (or you can "Pause" WinAPE and go to address &bb5a).
 
 ```basic
 10 a=PEEK(&bb5a)
@@ -826,7 +828,7 @@ Thus, fe 93 corresponds to value 93fe that after removing bit15 and bit14 result
    -upper ROM disabled
 ```
 
-Now image that we want to print only uppercase characters, so we will need to modify the jumblock for &bb5a, then subtract 32 to any character between 'a' and 'z' and call the original routine. Take into account that we have not to corrupt any register that could be in use. From the documentation of bb5a we know takes register A as input and preserves other registers at output, thus, we should behave in the same way and we will use push and pop instructions.
+Now image that we want to print only uppercase characters, so we will need to modify the jumpblock for &bb5a, then subtract 32 to any character between 'a' and 'z' and call the original routine. Take into account that we have not to corrupt any register that could be in use. From the documentation of bb5a we know takes register A as input and preserves other registers at output, thus, we should behave in the same way and we will use push and pop instructions.
 
 The code for our uppercase function will be:
 	      
