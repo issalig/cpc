@@ -413,19 +413,19 @@ We have already used memory address &1200 which is in the area of BASIC (0170-HI
 
 | RAM | ROM | External |
 |-|-|-|
-| FFFF-C000 Screen memory (16k) | 16k Upper ROM (BASIC) | 16k max. 252 ext ROMS |
-| BFFF-B100 Stack, firmware and jumblock | 3FFF-0000 16k firmware ROM |  |
-| B0FF-AC00 BASIC Workspace |  |  |
-| -ABFF Background data (&500 bytes used by AMSDOS if present) |  |  |
+| C000-FFFF Screen memory (16k) | 16k Upper ROM (BASIC) | 16k max. 252 ext ROMS |
+| B100-BFFF Stack, firmware and jumblock | 3FFF-0000 16k firmware ROM |  |
+| AC00-B0FF BASIC Workspace |  |  |
+| ABFF- Background data (&500 bytes used by AMSDOS if present) |  |  |
 | -     User defined graphics |  |  |
 | -     Space for machine code routines |  |  |
 | - HIMEM Strings area |  |  |
 | -     FREE SPACE (used by AMSDOS for loading and saving) |  |  |
 | -     Arrays area |  |  |
 | -     Variables and DEF FNs area |  |  |
-| -0170 Program area |  |  |
-| 016F-0040 Foreground workspace |  |  |
-| 003F-0000 RST routines |  |  |
+| 0170- Program area | Lower ROM |  |
+| 0040-016F Foreground workspace | Lower ROM |  |
+| 0000-003F RST routines | Lower ROM |  |
 
 ## Mixing asm and BASIC
 [Up](#CPC-Basic-and-Z80-adventures) [Previous](#Assembly) [Next](#Jumpblock)
@@ -778,22 +778,21 @@ http://www.cpcwiki.eu/index.php/Z88DK
 http://www.cpcmania.com/Docs/Programming/Introduction_to_programming_in_Z88dk_Compiling_and_testing_a_Hello_World.htm
 http://www.cpcwiki.eu/index.php/SDCC_and_CPC
 
-## Jumpblock
+## Firmware jumpblocks
 
 [Up](#CPC-Basic-and-Z80-adventures) [Previous](#Mixing-asm-and-BASIC) [Next](#RSX)
 
 In the examples above you have noticed that we have used CALL &XXXX. These are calls to utilities provided by the firmware such as printing a char in screen. In particular, this function is called from &BB5A and is known as TXT OUTPUT. Different computers can have different addresses for the firmware function but a solution to have a common entry point is to share a common address and then jump from there to the routine code. This set of jumps is known as jumpblock.
 
-There are four jumpblocks: 
- - The main firmware jumpblock that allows the user to call most firmware routines. 
- - The second jumpblock is the indirections jumpblock. The entries in this jumpblock are used by the firmware at key moments in order to allow the user
-to alter the action of the firmware. 
- - The last two jumpblocks are rather special. They are to do with the Kernel and allow ROMs to be enabled and routines in ROMs to be called.
+There are four jumpblocks: the main firmware jumpblock, the indirections jumpblock and two jumpblocks that deal with the Kernel and ROMs.
 
-Jumpblock is located at B100-BFFF. For more info check Soft968 Chapter 2. ROMs, RAM and the Restart Instructions (http://www.cpcwiki.eu/imgs/f/f6/S968se02.pdf)
- Chapter 14. Firmware jumpblocks https://cpctech.cpcwiki.de/docs/manual/s968se14.pdf and Chapter 18 The Low Kernel Jumpblock .https://cpctech.cpcwiki.de/docs/manual/s968se18.pdf
+For more info about jumpblocks check:
+- Soft968 Chapter 2. ROMs, RAM and the Restart Instructions (http://www.cpcwiki.eu/imgs/f/f6/S968se02.pdf)
+- Soft968 Chapter 14. Firmware jumpblocks https://cpctech.cpcwiki.de/docs/manual/s968se14.pdf 
+- Soft968 Chapter 18 The Low Kernel Jumpblock . 
+- Amstrad CPC Firmware guide https://cpctech.cpcwiki.de/docs/manual/s968se18.pdf https://acpc.me/ACME/DOCS_TECHNIQUES/The_AMSTRAD_CPC_Firmware_Guide(Bob_TAYLOR_Thomas_DEFOE_1992)(ENG).pdf
  
-Low Kernel Jumpblock is copied into RAM from the ROM during power-up initialization since all the entries supplied must be available whether the lower ROM is enabled or not, the area is copied into RAM. And this will let us PEEK those bytes.
+Jumpblock is copied to RAM from the ROM during power-up initialization since all the entries supplied must be available whether the lower ROM is enabled or not, the area is copied into RAM. And this will let us PEEK those bytes.
 
 The instructions executed when calling &bb5a can be obtained with this BASIC code (or you can "Pause" WinAPE and go to address &bb5a).
 
