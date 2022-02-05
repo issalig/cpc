@@ -4,6 +4,9 @@
 This is work in progress text where I document my findings about USIFAC2. USIFAC2 is an expansion rom for CPC which provides a serial connection, is able to load programs from USB sticks and has wifi and bluetooth support.
 You can find more info on the thread https://www.cpcwiki.eu/forum/amstrad-cpc-hardware/usifac-iimake-your-pc-or-usb-stick-an-hdd-for-amstrad-access-dsk-and-many-more!
 
+ikonsgr, the author of USIFAC2 has nicely shared the source code and schematics and it is available at https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACT6kqTr-sst-iqDeBnE9gRa?dl=0
+
+
 ## Theory of operation
 USIFAC2 plugs in the expansion port which has access to the data and address buses among other signals. By listening to the bus it can communicate to the CPC. (TO BE COMPLETED)
 
@@ -13,7 +16,6 @@ USIFAC2 is composed of few components, a microcontroller PIC18F47Q10, a diode an
 PIC18F47Q10 provides CLC (Configurable Logic Cells) which is a kind of small PLD (Programmable Logic Device) inside the microcontroller. Thus, no additional logic circuitry is needed as it was done in the previous usifac version.
 
 ## Software
-ikonsgr, the author of USIFAC2 has nicely shared the source code and it is available at https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACT6kqTr-sst-iqDeBnE9gRa?dl=0
 
 ### Microcontroller
 The main program for the microcontroller is written in Great Cow Basic (GCB) and there are versions of GCB for Windows and Linux (without GUI but we do not need it). This code is the glue between the ROM code and the rest of peripherals (USB, Serial Port, etc, ...) and includes the z80 machine code for the ROM and other convenience functions.
