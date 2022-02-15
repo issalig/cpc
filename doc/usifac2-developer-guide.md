@@ -97,9 +97,7 @@ In particular, PIC code is available at https://www.dropbox.com/sh/ua4vgf6qjjmql
 ### How to compile
 
 In order to compile the code for the PIC, you will need to install GreatCowBasic. It is available for both Linux and Windows (http://gcbasic.sourceforge.net/Typesetter/index.php/Download), but Linux will not have the GUI tool.
-I have installed it under Linux. 
-First you need to download and install FreeBasic from https://sourceforge.net/projects/fbc
-
+If you are a Windows user, just install the windows binaries. However, if you use Linux you need to follow the following steps.  First you need to download and install FreeBasic from https://sourceforge.net/projects/fbc
 Next, download GBCBasic https://sourceforge.net/projects/gcbasic/files/GCBasic%20-%20Linux%20Distribution/GCB%40Syn.rar/download and extract the file with the unbelievable password **GCB** ```unrar x GCB@Syn.rar ```
 ```
 cd sources/linuxbuild
@@ -118,6 +116,10 @@ Done
 Assembling program ...
 Program assembled successfully
 ```
+
+### Microcontroller code
+Microcontroller code starts with the definition of CLC and variables. 
+USIFAC2 communicates to the CPC through the serial port addresses **FBDX**
 
 ### ROM
 In this part resides the z80 code that the board makes use of. It is written as a standard ROM with the classical header and then the jumpblock (see https://github.com/issalig/cpc/blob/main/doc/cpcz80adventures.md#Rom for more info on ROMs)
