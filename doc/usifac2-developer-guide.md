@@ -59,7 +59,9 @@ CLC3CON = 0x02;    # MODE 4-input AND;
 ```
 
 
-The following image shows the circuit defined by the configuration below![image](https://user-images.githubusercontent.com/7136948/154040581-1e1b2548-5491-4eb7-b54a-1cadf4d7ae56.png)
+The following image shows the circuit for CLC3![image](https://user-images.githubusercontent.com/7136948/154040581-1e1b2548-5491-4eb7-b54a-1cadf4d7ae56.png)
+
+and for the rest of CLC definitions.
 
 CLC1![image](https://user-images.githubusercontent.com/7136948/154049624-9205e62e-d8ea-4810-bff1-34dd5ea08cc3.png)
 CLC2![image](https://user-images.githubusercontent.com/7136948/154049693-bc572982-65cd-4965-b400-fc752d2b204d.png)
@@ -69,9 +71,7 @@ CLC5![image](https://user-images.githubusercontent.com/7136948/154049775-2ee4f5d
 
 You can get this drawing with MPLAB Code Configurator (MCC) (https://microchipdeveloper.com/mcc:clc) and also with GreatCowBasic but only Windows version provides this tool :(.
 
-
-We will see later how software uses this CLC signals.
-
+We will see later how software uses these CLC signals.
 
 
 ## Software
