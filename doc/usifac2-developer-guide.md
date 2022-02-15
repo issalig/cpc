@@ -1,4 +1,4 @@
-# USIFAC2
+# USIFAC2 internals and developer guide
 
 ## Introduction
 This is a **WORK IN PROGRESS** text where I document my findings about USIFAC2. USIFAC2 is an expansion rom for CPC which provides a serial connection, is able to load programs from USB sticks and has wifi and bluetooth support.
