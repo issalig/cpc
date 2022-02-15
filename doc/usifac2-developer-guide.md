@@ -1,7 +1,8 @@
 # USIFAC2 internals and developer guide
 
 ## Introduction
-This is a **WORK IN PROGRESS** text where I document my findings about USIFAC2. USIFAC2 is an expansion rom for CPC which provides a serial connection, is able to load programs from USB sticks and has wifi and bluetooth support.
+This is a **WORK IN PROGRESS** text where I document my findings. 
+USIFAC2 is an expansion rom for CPC which provides a serial connection, is able to load programs from USB sticks and has wifi and bluetooth support.
 You can find more info on the thread https://www.cpcwiki.eu/forum/amstrad-cpc-hardware/usifac-iimake-your-pc-or-usb-stick-an-hdd-for-amstrad-access-dsk-and-many-more!
 
 ikonsgr, the author of USIFAC2 has nicely shared the source code and schematics and it is available at https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACT6kqTr-sst-iqDeBnE9gRa?dl=0
