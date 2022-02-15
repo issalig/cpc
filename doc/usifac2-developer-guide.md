@@ -20,11 +20,11 @@ PIC18F47Q10 provides CLC (Configurable Logic Cells) which is a kind of small PLD
 More info about CLC can be found in https://microchipdeveloper.com/8bit:clc  
 In particular, 5 CLC are used:
 
-- CLC1 = AND(/IORQ, M1, /A10, /FDC)  #I/O
+- CLC1 = AND(/IORQ, M1, /A10, /A5)  #I/O
 - CLC2 = AND(/IORQ, M1, /A13, /A13) # Select ROM
 - CLC3 = AND(/ROMEN, A14) # ROM read
 - CLC4 = NOT(OR(OR(CLC1,CLC2,CLC5),AND(CLC5,CLC3))) #Enable PIC
-- CLC5 = AND(/IORQ, M1, /A10, FDC) #FDC
+- CLC5 = AND(/IORQ, M1, /A10, A5) #FDC
 
 The definitions of the CLC are found in the .gcb files from https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACCGyppKnn29U_gbG_hE6eUa/PIC%2018F47Q10/18f47q10_5_gcb_source.zip
 
@@ -43,7 +43,7 @@ Usifac2 uses the following pins for CLC inputs:
     CLCIN3PPS = 0x0E;   //RB6 > CLCIN3       A14
     CLCIN4PPS = 0x12;   //RC2->CLC4:CLCIN4   A10
     CLCIN5PPS = 0x15;   //RC5->CLC4:CLCIN5   A13
-    CLCIN6PPS = 0x0C;   //RB4->CLC1:CLCIN6   FDC ENABLE
+    CLCIN6PPS = 0x0C;   //RB4->CLC1:CLCIN6   A5
 ```
 
 In the page 293 of the manual (https://ww1.microchip.com/downloads/en/DeviceDoc/PIC18F27-47Q10-Data-Sheet-40002043E.pdf) it is shown how the PPS are coded. For example, CLCIN6PPS is assigned to RB4 which is PORTB (01) pin 4 (100), being 01100 -> 0x0C
