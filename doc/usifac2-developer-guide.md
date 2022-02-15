@@ -124,11 +124,12 @@ USIFAC2 communicates to the CPC through the serial port addresses **FBDX**
 CPC uses register **DF00** (A13 has to be low) in order to select the number of a external ROM. ROM 0 is BASIC, ROM 1 to 6 are external, ROM 7 is usually for AMSDOS or PARADOS on a CPC6128. (If you want to know more about ROMS, just check http://cpctech.cpc-live.com/docs/manual/s968se02.pdf)
 ROMs map into $C000 to $FFFF. Thus, after writing the desired ROM number into DF000, /ROMEN signal goes low and if a valid expansion ROM has been selected via the $DF00 register, then the external ROM board must send ROMDIS high. Another important signal is the M1 which stands for Machine cycle one. Each instruction cycle is composed of tree machine cycles: M1, M2 and M3. M1 is the “op code fetch” machine cycle. This signal is active low and we must make sure M1 is high when communicating with the Z80.
 
-Thus, in order to detect "select rom" events we can use CLC2 which computes AND(/IORQ,M1,/A13). In GCB, CLCs are accesible from ```CLCDATA.X```, for example the following code shows the ROM READ section.
-
+Pins in the microcontroller are grouped by ports, having PORT A,B,C and C 8bits and PORT E 3 bits. In particular we are interested in ports A, B and C.
 - PORTA(7..0) is connected to address low byte A7..A0
 - PORTC(7..0) is connected to address high byte ROMEN,IORQ,A13..A8
 - PORTB(7..0) is connected to A15, A14, M1, A5, ROMDIS ,TX,RX, READY
+
+Going back to the rom selection mechanism, we can use CLC2 to detect a write on **FD00** which computes AND(/IORQ,M1,/A13). In GCB, CLCs are accesible from ```CLCDATA.X```, for example the following code shows the ROM READ section.
 
 ```
 ;###############################################-------------------code for ROM READ!###################################
