@@ -81,9 +81,7 @@ We will see later how software uses these CLC signals.
 ### Circuit schematics
 Schematics can be found at https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACT6kqTr-sst-iqDeBnE9gRa?dl=0&preview=Usifac_ii_schematic.jpg
 
-It is worth to note that in a real USIFAC board, pin 37(RB4) on the microcontroller is connected to pin 13(A5) on the CPC while the schematics does not show that connection. Thus, pin 7(RA5) and pin 37(RB4) are connected. 
-
-
+It is **worth to note** that in a real USIFAC board (2nd green version with ch376s soldered), pin 37(RB4) on the microcontroller is connected to pin 13(A5) on the CPC while schematics do not show that connection. Thus, pin 7(RA5) and pin 37(RB4) are connected.
 
 ![image](https://user-images.githubusercontent.com/7136948/154051288-c07643e3-c5f3-43d8-a7fe-0fdbfc92d0d0.png)
 
