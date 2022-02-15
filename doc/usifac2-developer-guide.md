@@ -11,7 +11,7 @@ ikonsgr, the author of USIFAC2 has nicely shared the source code and schematics 
 USIFAC2 plugs in the expansion port which has access to the data and address buses among other signals. By listening to the bus it can communicate to the CPC. (TO BE COMPLETED)
 
 ## Hardware
-USIFAC2 is composed of few components, a microcontroller PIC18F47Q10, a diode and a couple of capacitors. A schematic of the circuit is provided at https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACi-NI8lLCniHfSaHBJnOl_a/Usifac_ii_schematic.jpg?dl=0
+USIFAC2 is composed of few components, a microcontroller PIC18F47Q10 (https://ww1.microchip.com/downloads/en/DeviceDoc/PIC18F27-47Q10-Data-Sheet-40002043E.pdf) , a diode and a couple of capacitors. 
 
 ### CLC
 PIC18F47Q10 provides CLC (Configurable Logic Cells) which is a kind of small PLD (Programmable Logic Device) inside the microcontroller. Thus, no additional logic circuitry is needed as it was done in the previous usifac version.
@@ -43,6 +43,11 @@ The definitions of the CLC are found in the .gcb files from https://www.dropbox.
     CLCIN6PPS = 0x0C;   //RB4->CLC1:CLCIN6;  FDC ENABLE
 ```
 
+In the page 293 of the manual (https://ww1.microchip.com/downloads/en/DeviceDoc/PIC18F27-47Q10-Data-Sheet-40002043E.pdf) it is shown how the PPS are coded. For examples CLCIN6PPS is assigned to RB4 which is PORTB (01) pin 4 (100), being 01100 -> 0x0C
+
+![image](https://user-images.githubusercontent.com/7136948/154055739-4c75364a-c230-466d-b25d-8d7b957ba9c2.png)
+
+
 In particular, the configuration for CLC3 that activates when a ROM read is requested is the following:
 
 ```
@@ -73,6 +78,14 @@ You can get this drawing with MPLAB Code Configurator (MCC) (https://microchipde
 
 We will see later how software uses these CLC signals.
 
+### Circuit schematics
+Schematics can be found at https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACT6kqTr-sst-iqDeBnE9gRa?dl=0&preview=Usifac_ii_schematic.jpg
+
+It is worth to note that in a real USIFAC board, pin 37(RB4) on the microcontroller is connected to pin 13(A5) on the CPC while the schematics does not show that connection. Thus, pin 7(RA5) and pin 37(RB4) are connected. 
+
+
+
+![image](https://user-images.githubusercontent.com/7136948/154051288-c07643e3-c5f3-43d8-a7fe-0fdbfc92d0d0.png)
 
 ## Software
 
