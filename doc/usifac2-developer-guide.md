@@ -98,7 +98,8 @@ In particular, PIC code is available at https://www.dropbox.com/sh/ua4vgf6qjjmql
 
 In order to compile the code for the PIC, you will need to install GreatCowBasic. It is available for both Linux and Windows (http://gcbasic.sourceforge.net/Typesetter/index.php/Download), but Linux will not have the GUI tool.
 I have installed it under Linux. 
-First you need to download and install FreeBasic from https://sourceforge.net/projects/fbc/ 
+First you need to download and install FreeBasic from https://sourceforge.net/projects/fbc
+
 Next, download GBCBasic https://sourceforge.net/projects/gcbasic/files/GCBasic%20-%20Linux%20Distribution/GCB%40Syn.rar/download and extract the file with the unbelievable password **GCB** ```unrar x GCB@Syn.rar ```
 ```
 cd sources/linuxbuild
