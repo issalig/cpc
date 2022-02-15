@@ -1,7 +1,7 @@
 # USIFAC2
 
 ## Introduction
-This is work in progress text where I document my findings about USIFAC2. USIFAC2 is an expansion rom for CPC which provides a serial connection, is able to load programs from USB sticks and has wifi and bluetooth support.
+This is a **WORK IN PROGRESS** text where I document my findings about USIFAC2. USIFAC2 is an expansion rom for CPC which provides a serial connection, is able to load programs from USB sticks and has wifi and bluetooth support.
 You can find more info on the thread https://www.cpcwiki.eu/forum/amstrad-cpc-hardware/usifac-iimake-your-pc-or-usb-stick-an-hdd-for-amstrad-access-dsk-and-many-more!
 
 ikonsgr, the author of USIFAC2 has nicely shared the source code and schematics and it is available at https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACT6kqTr-sst-iqDeBnE9gRa?dl=0
@@ -13,8 +13,10 @@ USIFAC2 plugs in the expansion port which has access to the data and address bus
 ## Hardware
 USIFAC2 is composed of few components, a microcontroller PIC18F47Q10, a diode and a couple of capacitors. A schematic of the circuit is provided at https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACi-NI8lLCniHfSaHBJnOl_a/Usifac_ii_schematic.jpg?dl=0
 
+### CLC
 PIC18F47Q10 provides CLC (Configurable Logic Cells) which is a kind of small PLD (Programmable Logic Device) inside the microcontroller. Thus, no additional logic circuitry is needed as it was done in the previous usifac version.
 
+More info about CLC can be found in https://microchipdeveloper.com/8bit:clc  
 In particular, 5 CLC are used:
 
 - CLC1 = AND(/IORQ, M1, /A10, /FDC)  #I/O
@@ -23,7 +25,54 @@ In particular, 5 CLC are used:
 - CLC4 = NOT(OR(OR(CLC1,CLC2,CLC5),AND(CLC5,CLC3))) #Enable PIC
 - CLC5 = AND(/IORQ, M1, /A10, FDC) #FDC
 
-The definitions of the CLC are found in 
+The definitions of the CLC are found in the .gcb files from https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACCGyppKnn29U_gbG_hE6eUa/PIC%2018F47Q10/18f47q10_5_gcb_source.zip
+
+- PPS stands for Peripheral Pin Setup and assigns pins to CLC inputs.
+- POL inverts output if necessary
+- SEL selects data inputs
+- GLS connect inputs to gates and invert them if necessary
+- CON sets gate types (AND, NAND, AND-OR, AND-OR-INVERT, OR-XOR, OR-XNOR)
+
+```
+    CLCIN0PPS = 0x16;   //RC6->CLC4:CLCIN0;  IORQ    
+    CLCIN1PPS = 0x17;   //RC7->CLC4:CLCIN1;  ROMEN
+    CLCIN2PPS = 0x0D;   //RB5 > CLCIN2        M1
+    CLCIN3PPS = 0x0E;   //RB6 > CLCIN3        A14
+    CLCIN4PPS = 0x12;   //RC2->CLC4:CLCIN4;  A10
+    CLCIN5PPS = 0x15;   //RC5->CLC4:CLCIN5;  A13
+    CLCIN6PPS = 0x0C;   //RB4->CLC1:CLCIN6;  FDC ENABLE
+```
+
+In particular, the configuration for CLC3 that activates when a ROM read is requested is the following:
+
+```
+CLC3POL = 0x00;   // not inverted
+CLC3SEL0 = 0x01;  // CLCIN1PPS  ROMEN
+CLC3SEL1 = 0x03;  // CLCIN3PPS  A14
+CLC3SEL2 = 0x03;  // CLCIN3PPS  A14
+CLC3SEL3 = 0x03;  // CLCIN3PPS  A14
+CLC3GLS0 = 0x01;  // First input negated
+CLC3GLS1 = 0x08;  // Second input
+CLC3GLS2 = 0x20;  // Third input
+CLC3GLS3 = 0x80;  // Fourth input
+CLC3CON = 0x02;    # MODE 4-input AND; 
+```
+
+
+The following image shows the circuit defined by the configuration below![image](https://user-images.githubusercontent.com/7136948/154040581-1e1b2548-5491-4eb7-b54a-1cadf4d7ae56.png)
+
+CLC1![image](https://user-images.githubusercontent.com/7136948/154049624-9205e62e-d8ea-4810-bff1-34dd5ea08cc3.png)
+CLC2![image](https://user-images.githubusercontent.com/7136948/154049693-bc572982-65cd-4965-b400-fc752d2b204d.png)
+CLC4![image](https://user-images.githubusercontent.com/7136948/154049732-b53a4d8f-4fc4-42f3-aba3-e5ddcf1c31df.png)
+CLC5![image](https://user-images.githubusercontent.com/7136948/154049775-2ee4f5d9-20ff-4c26-8066-469f57d9a119.png)
+
+
+You can get this drawing with MPLAB Code Configurator (MCC) (https://microchipdeveloper.com/mcc:clc) and also with GreatCowBasic but only Windows version provides this tool :(.
+
+
+We will see later how software uses this CLC signals.
+
+
 
 ## Software
 
