@@ -34,25 +34,27 @@ The definitions of the CLC are found in the .gcb files from https://www.dropbox.
 - GLS connect inputs to gates and invert them if necessary
 - CON sets gate types (AND, NAND, AND-OR, AND-OR-INVERT, OR-XOR, OR-XNOR)
 
+Usifac2 uses the following pins for CLC inputs:
+
 ```
-    CLCIN0PPS = 0x16;   //RC6->CLC4:CLCIN0;  IORQ    
-    CLCIN1PPS = 0x17;   //RC7->CLC4:CLCIN1;  ROMEN
-    CLCIN2PPS = 0x0D;   //RB5 > CLCIN2        M1
-    CLCIN3PPS = 0x0E;   //RB6 > CLCIN3        A14
-    CLCIN4PPS = 0x12;   //RC2->CLC4:CLCIN4;  A10
-    CLCIN5PPS = 0x15;   //RC5->CLC4:CLCIN5;  A13
-    CLCIN6PPS = 0x0C;   //RB4->CLC1:CLCIN6;  FDC ENABLE
+    CLCIN0PPS = 0x16;   //RC6->CLC4:CLCIN0   IORQ    
+    CLCIN1PPS = 0x17;   //RC7->CLC4:CLCIN1   ROMEN
+    CLCIN2PPS = 0x0D;   //RB5 > CLCIN2       M1
+    CLCIN3PPS = 0x0E;   //RB6 > CLCIN3       A14
+    CLCIN4PPS = 0x12;   //RC2->CLC4:CLCIN4   A10
+    CLCIN5PPS = 0x15;   //RC5->CLC4:CLCIN5   A13
+    CLCIN6PPS = 0x0C;   //RB4->CLC1:CLCIN6   FDC ENABLE
 ```
 
-In the page 293 of the manual (https://ww1.microchip.com/downloads/en/DeviceDoc/PIC18F27-47Q10-Data-Sheet-40002043E.pdf) it is shown how the PPS are coded. For examples CLCIN6PPS is assigned to RB4 which is PORTB (01) pin 4 (100), being 01100 -> 0x0C
+In the page 293 of the manual (https://ww1.microchip.com/downloads/en/DeviceDoc/PIC18F27-47Q10-Data-Sheet-40002043E.pdf) it is shown how the PPS are coded. For example, CLCIN6PPS is assigned to RB4 which is PORTB (01) pin 4 (100), being 01100 -> 0x0C
 
 ![image](https://user-images.githubusercontent.com/7136948/154055739-4c75364a-c230-466d-b25d-8d7b957ba9c2.png)
 
 
-In particular, the configuration for CLC3 that activates when a ROM read is requested is the following:
+In particular, the configuration for CLC3 that is activated when a ROM read is requested is the following:
 
 ```
-CLC3POL = 0x00;   // not inverted
+CLC3POL  = 0x00;  // not inverted
 CLC3SEL0 = 0x01;  // CLCIN1PPS  ROMEN
 CLC3SEL1 = 0x03;  // CLCIN3PPS  A14
 CLC3SEL2 = 0x03;  // CLCIN3PPS  A14
@@ -61,9 +63,8 @@ CLC3GLS0 = 0x01;  // First input negated
 CLC3GLS1 = 0x08;  // Second input
 CLC3GLS2 = 0x20;  // Third input
 CLC3GLS3 = 0x80;  // Fourth input
-CLC3CON = 0x02;    # MODE 4-input AND; 
+CLC3CON  = 0x02;  // MODE 4-input AND; 
 ```
-
 
 The following image shows the circuit for CLC3![image](https://user-images.githubusercontent.com/7136948/154040581-1e1b2548-5491-4eb7-b54a-1cadf4d7ae56.png)
 
@@ -82,7 +83,7 @@ We will see later how software uses these CLC signals.
 ### Circuit schematics
 Schematics can be found at https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACT6kqTr-sst-iqDeBnE9gRa?dl=0&preview=Usifac_ii_schematic.jpg
 
-It is **worth to note** that in a real USIFAC board (2nd green version with ch376s soldered), pin 37(RB4) on the microcontroller is connected to pin 13(A5) on the CPC while schematics do not show that connection. Thus, pin 7(RA5) and pin 37(RB4) are connected.
+It is **worth to note** that in a real USIFAC board (2nd green version with ch376s soldered), pin 37(RB4) on the microcontroller is connected to pin 13(A5) on the CPC while schematics do not show that connection. Thus, pin 7(RA5) and pin 37(RB4) are connected to the same signal. RB4 is used by CLCs while RA5 is used in PORTA. Not sure if this the reason to have duplicated pins.
 
 ![image](https://user-images.githubusercontent.com/7136948/154051288-c07643e3-c5f3-43d8-a7fe-0fdbfc92d0d0.png)
 
