@@ -94,6 +94,30 @@ The main program for the microcontroller is written in Great Cow Basic (GCB) and
 
 In particular, PIC code is available at https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AAC86pJ104xlgsk8MaGW1CMKa/PIC%2018F47Q10?dl=0&subfolder_nav_tracking=1 being version 5 the last one with source code.
 
+### How to compile
+
+In order to compile the code for the PIC, you will need to install GreatCowBasic. It is available for both Linux and Windows (http://gcbasic.sourceforge.net/Typesetter/index.php/Download), but Linux will not have the GUI tool.
+I have installed it under Linux. 
+First you need to download and install FreeBasic from https://sourceforge.net/projects/fbc/ 
+Next, download GBCBasic https://sourceforge.net/projects/gcbasic/files/GCBasic%20-%20Linux%20Distribution/GCB%40Syn.rar/download and extract the file with the unbelievable password **GCB** ```unrar x GCB@Syn.rar ```
+```
+cd sources/linuxbuild
+chmod a+x install.sh
+./install.sh build
+```
+
+If everything went well, GBC is now installed, if not just check this document https://sourceforge.net/projects/gcbasic/files/GCBasic%20-%20Linux%20Distribution/readme-linux-install-updated.txt/download
+
+Now it is time to compile the .gcb program
+```
+./makehex.sh 18f47q10_5.gcb 
+Great Cow BASIC (0.98.07 RC45 2021-03-31 (Linux 64 bit))
+Compiling 18f47q10_5.gcb ...
+Done
+Assembling program ...
+Program assembled successfully
+```
+
 ### ROM
 In this part resides the z80 code that the board makes use of. It is written as a standard ROM with the classical header and then the jumpblock (see https://github.com/issalig/cpc/blob/main/doc/cpcz80adventures.md#Rom for more info on ROMs)
 
