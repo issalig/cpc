@@ -15,6 +15,16 @@ USIFAC2 is composed of few components, a microcontroller PIC18F47Q10, a diode an
 
 PIC18F47Q10 provides CLC (Configurable Logic Cells) which is a kind of small PLD (Programmable Logic Device) inside the microcontroller. Thus, no additional logic circuitry is needed as it was done in the previous usifac version.
 
+In particular, 5 CLC are used:
+
+- CLC1 = AND(/IORQ, M1, /A10, /FDC)  #I/O
+- CLC2 = AND(/IORQ, M1, /A13, /A13) # Select ROM
+- CLC3 = AND(/ROMEN, A14) # ROM read
+- CLC4 = NOT(OR(OR(CLC1,CLC2,CLC5),AND(CLC5,CLC3))) #Enable PIC
+- CLC5 = AND(/IORQ, M1, /A10, FDC) #FDC
+
+The definitions of the CLC are found in 
+
 ## Software
 
 ### Microcontroller
