@@ -15,10 +15,9 @@ USIFAC2 plugs in the expansion port which has access to the data and address bus
 USIFAC2 is composed of few components, a microcontroller PIC18F47Q10 (https://ww1.microchip.com/downloads/en/DeviceDoc/PIC18F27-47Q10-Data-Sheet-40002043E.pdf) , a diode and a couple of capacitors. 
 
 ### CLC
-PIC18F47Q10 provides CLC (Configurable Logic Cells) which is a kind of small PLD (Programmable Logic Device) inside the microcontroller. Thus, no additional logic circuitry is needed as it was done in the previous usifac version.
+PIC18F47Q10 provides CLC (Configurable Logic Cells) which is a kind of small PLD (Programmable Logic Device) inside the microcontroller. Thus, **no additional logic circuitry is needed** as it was done in the previous usifac version. CLC configuration is stored in RAM and can be changed during execution. CLC response time is the same for all the cells and it is around 10ns. More info about CLC can be found in https://microchipdeveloper.com/8bit:clc  
 
-More info about CLC can be found in https://microchipdeveloper.com/8bit:clc  
-In particular, 5 CLC are used:
+In USIFAC2, 5 CLCs are used:
 
 - CLC1 = AND(/IORQ, M1, /A10, /A5)  #I/O
 - CLC2 = AND(/IORQ, M1, /A13, /A13) # Select ROM
@@ -26,7 +25,7 @@ In particular, 5 CLC are used:
 - CLC4 = NOT(OR(OR(CLC1,CLC2,CLC5),AND(CLC5,CLC3))) #Enable PIC
 - CLC5 = AND(/IORQ, M1, /A10, A5) #FDC
 
-The definitions of the CLC are found in the .gcb files from https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACCGyppKnn29U_gbG_hE6eUa/PIC%2018F47Q10/18f47q10_5_gcb_source.zip
+The definitions of the CLCs are found in the .gcb files from https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACCGyppKnn29U_gbG_hE6eUa/PIC%2018F47Q10/18f47q10_5_gcb_source.zip
 
 - PPS stands for Peripheral Pin Setup and assigns pins to CLC inputs.
 - POL inverts output if necessary
@@ -122,12 +121,12 @@ Microcontroller code starts with the definition of CLC and variables.
 USIFAC2 communicates to the CPC through the serial port addresses **FBDX**
 
 CPC uses register **DF00** (A13 has to be low) in order to select the number of a external ROM. ROM 0 is BASIC, ROM 1 to 6 are external, ROM 7 is usually for AMSDOS or PARADOS on a CPC6128. (If you want to know more about ROMS, just check http://cpctech.cpc-live.com/docs/manual/s968se02.pdf)
-ROMs map into $C000 to $FFFF. Thus, after writing the desired ROM number into DF000, /ROMEN signal goes low and if a valid expansion ROM has been selected via the $DF00 register, then the external ROM board must send ROMDIS high. Another important signal is the M1 which stands for Machine cycle one. Each instruction cycle is composed of tree machine cycles: M1, M2 and M3. M1 is the “op code fetch” machine cycle. This signal is active low and we must make sure M1 is high when communicating with the Z80.
+ROMs map into $C000 to $FFFF (16kb). Thus, after writing the desired ROM number into DF000, /ROMEN signal goes low and if a valid expansion ROM has been selected via the DF00 register, then the external ROM board must send ROMDIS high. Another important signal is the M1 which stands for Machine cycle one. Each instruction cycle is composed of tree machine cycles: M1, M2 and M3. M1 is the "op code fetch" machine cycle. This signal is active low and we must make sure M1 is high when communicating with the Z80.
 
 Pins in the microcontroller are grouped by ports, having PORT A,B,C and C 8bits and PORT E 3 bits. In particular we are interested in ports A, B and C.
 - PORTA(7..0) is connected to address low byte A7..A0
 - PORTC(7..0) is connected to address high byte ROMEN,IORQ,A13..A8
-- PORTB(7..0) is connected to A15, A14, M1, A5, ROMDIS ,TX,RX, READY
+- PORTB(7..0) is connected to A15, A14, M1, A5, ROMDIS, TX, RX, READY
 
 Going back to the rom selection mechanism, we can use CLC2 to detect a write on **FD00** which computes AND(/IORQ,M1,/A13). In GCB, CLCs are accesible from ```CLCDATA.X```, for example the following code shows the ROM READ section.
 
