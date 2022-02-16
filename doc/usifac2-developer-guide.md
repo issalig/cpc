@@ -88,7 +88,7 @@ The definitions of the CLCs are found in the .gcb files from https://www.dropbox
 - POL inverts output if necessary
 - SEL selects data inputs
 - GLS connect inputs to gates and invert them if necessary
-- CON sets gate types (AND, NAND, AND-OR, AND-OR-INVERT, OR-XOR, OR-XNOR)
+- CON sets gate types (AND (0x02), NAND, AND-OR (0x00), AND-OR-INVERT, OR-XOR (0x01), OR-XNOR). Bit 7 is set to 1 if active, bit 4 for rising interrupt and bit 3 for falling.
 
 Usifac2 uses the following pins for CLC inputs:
 
