@@ -60,7 +60,7 @@ In order to avoid misunderstandings @danhans42 has incorporated all of these dif
 | 30 | RD7 | 19 | D7 |
 | 31 | VSS | 2 | GND |
 | 32 | VDD | 27 | VCC |
-| 33 | RB0 | 39 | READY (with diode) |
+| 33 | RB0 | 39 / Swap btn | READY (with diode) |
 | 34 | RB1 | Serial  RX |
 | 35 | RB2 | Serial  TX |
 | 36 | RB3 | 43 | ROMDIS |
