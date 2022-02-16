@@ -1066,7 +1066,7 @@ For a more detailed information and to know all the insights check the following
 
 And after doing our first RSX it is time to go for ROMs. In particular we will explore Foreground Roms that contain one or more programs. The on-board BASIC is the default foreground program.
 
-The structture is similar to an RSX but we will need an initalization routine. Upper ROM are located at C000.
+The structure is similar to an RSX but we will need an initalization routine. Upper ROM are located at C000.
 
 The first four bytes will be the following:
 - ROM type: 0 for foreground, 1 for background, 2 for extension (onboard ROM is type &80)
