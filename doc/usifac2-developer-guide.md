@@ -134,10 +134,10 @@ The following image shows the circuit for CLC3![image](https://user-images.githu
 
 and for the rest of CLC definitions.
 
-CLC1![image](https://user-images.githubusercontent.com/7136948/154049624-9205e62e-d8ea-4810-bff1-34dd5ea08cc3.png)
-CLC2![image](https://user-images.githubusercontent.com/7136948/154049693-bc572982-65cd-4965-b400-fc752d2b204d.png)
-CLC4![image](https://user-images.githubusercontent.com/7136948/154049732-b53a4d8f-4fc4-42f3-aba3-e5ddcf1c31df.png)
-CLC5![image](https://user-images.githubusercontent.com/7136948/154049775-2ee4f5d9-20ff-4c26-8066-469f57d9a119.png)
+CLC1 I/O ![image](https://user-images.githubusercontent.com/7136948/154049624-9205e62e-d8ea-4810-bff1-34dd5ea08cc3.png)
+CLC2 Select ROM ![image](https://user-images.githubusercontent.com/7136948/154049693-bc572982-65cd-4965-b400-fc752d2b204d.png)
+CLC4 Enable PIC ![image](https://user-images.githubusercontent.com/7136948/154049732-b53a4d8f-4fc4-42f3-aba3-e5ddcf1c31df.png)
+CLC5 FDC ![image](https://user-images.githubusercontent.com/7136948/154049775-2ee4f5d9-20ff-4c26-8066-469f57d9a119.png)
 
 
 You can get this drawing with MPLAB Code Configurator (MCC) (https://microchipdeveloper.com/mcc:clc) and also with GreatCowBasic but only Windows version provides this tool :(.
