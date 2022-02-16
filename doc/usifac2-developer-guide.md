@@ -114,6 +114,9 @@ In the page 293 of the manual (https://ww1.microchip.com/downloads/en/DeviceDoc/
 
 ![image](https://user-images.githubusercontent.com/7136948/154055739-4c75364a-c230-466d-b25d-8d7b957ba9c2.png)
 
+An easier way to to it is with PIC PPS Tool for GCB (Only for Win, or wine with .NET stuff)
+![image](https://user-images.githubusercontent.com/7136948/154342800-65872914-bdc8-4936-843f-b80b5b55b8d8.png)
+
 
 In particular, the configuration for CLC3 that is activated when a ROM read is requested is the following:
 
