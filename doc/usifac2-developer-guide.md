@@ -67,7 +67,7 @@ It is **worth to note** that in a real USIFAC board (2nd green version with ch37
 | 39 | RB6 |  4 | A14, ICSP CLK | 
 | 40 | RB7 |  3 | A15, ICSP DAT | 
 
-* Differences between schematics and real board.
+(*) Differences between schematics and real board.
 
 ### CLC
 PIC18F47Q10 provides CLC (Configurable Logic Cells) which is a kind of small PLD (Programmable Logic Device) inside the microcontroller. Thus, **no additional logic circuitry is needed** as it was done in the previous usifac version. CLC configuration is stored in RAM and can be changed during execution. CLC response time is the same for all the cells and it is around 10ns. More info about CLC can be found in https://microchipdeveloper.com/8bit:clc  
