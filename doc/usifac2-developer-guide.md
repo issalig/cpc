@@ -44,18 +44,18 @@ It is **worth to note** that in a real USIFAC board (2nd green version with ch37
 | 16 | RC1 |  9 | A9 |
 | 17 | RC2 |  8 | A10 |
 | 18 | RC3 |  7 | A11 |
-| 19 | RD0 | 26 D0 |
-| 20 | RD1 | 25 D1 |
-| 21 | RD2 | 24 D2 |
-| 22 | RD3 | 23 D3 |
-| 23 | RC4 |  6 A12 |
-| 24 | RC5 |  5 A13 |
-| 25 | RC6 | 31 IORQ |
-| 26 | RC7 | 42 ROMEN |
-| 27 | RD4 | 22 D4 |
-| 28 | RD5 | 21 D5 |
-| 29 | RD6 | 20 D6 |
-| 30 | RD7 | 19 D7 |
+| 19 | RD0 | 26 | D0 |
+| 20 | RD1 | 25 | D1 |
+| 21 | RD2 | 24 | D2 |
+| 22 | RD3 | 23 | D3 |
+| 23 | RC4 |  6 | A12 |
+| 24 | RC5 |  5 | A13 |
+| 25 | RC6 | 31 | IORQ |
+| 26 | RC7 | 42 | ROMEN |
+| 27 | RD4 | 22 | D4 |
+| 28 | RD5 | 21 | D5 |
+| 29 | RD6 | 20 | D6 |
+| 30 | RD7 | 19 | D7 |
 | 31 | VSS | 2 | GND |
 | 32 | VDD | 27 | VCC |
 | 33 | RB0 | 39 | READY (with diode) |
