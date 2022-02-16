@@ -144,6 +144,12 @@ You can get this drawing with MPLAB Code Configurator (MCC) (https://microchipde
 
 We will see later how software uses these CLC signals.
 
+### Serial peripherals
+Different serial devices can be attached to the board. In fact, USIFAC2, comes with a CH376s module. This module is used for USB communication and it is used in Serial configuration with the jumper in the Serial position as it is shown in the image.
+![image](https://user-images.githubusercontent.com/7136948/154296597-04378c63-1d66-4aa2-b423-859e80532dfd.png)
+
+Other boards such as ESP8266 and bluetooth can be connected in a similar way. just using TX, RX, VCC and GND.
+
 
 ## Software
 
