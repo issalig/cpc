@@ -17,15 +17,13 @@ USIFAC2 plugs in the expansion port which has access to the data and address bus
 USIFAC2 is composed of few components, a microcontroller PIC18F47Q10 (https://ww1.microchip.com/downloads/en/DeviceDoc/PIC18F27-47Q10-Data-Sheet-40002043E.pdf) , a diode and a couple of capacitors. 
 
 ### Schematics
-Schematics can be found at https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACT6kqTr-sst-iqDeBnE9gRa?dl=0&preview=Usifac_ii_schematic.jpg
+Original schematics can be found at https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACT6kqTr-sst-iqDeBnE9gRa?dl=0&preview=Usifac_ii_schematic.jpg
+It is **worth to note** that in a real USIFAC board (2nd green version with ch376s soldered), pin 37(RB4) on the microcontroller is connected to pin 13(A5) on the CPC while the original schematics do not show that connection. Thus, pin 7(RA5) and pin 37(RB4) are connected to the same signal. RB4 is used by CLCs while RA5 is used in PORTA. Not sure if this the reason to have duplicated pins. Also pin 1 is connected to BRST.
 
-It is **worth to note** that in a real USIFAC board (2nd green version with ch376s soldered), pin 37(RB4) on the microcontroller is connected to pin 13(A5) on the CPC while the original schematics do not show that connection. Thus, pin 7(RA5) and pin 37(RB4) are connected to the same signal. RB4 is used by CLCs while RA5 is used in PORTA. Not sure if this the reason to have duplicated pins.
+<!-- ORIGINAL SCHEMATIC ![image](https://user-images.githubusercontent.com/7136948/154051288-c07643e3-c5f3-43d8-a7fe-0fdbfc92d0d0.png) -->
 
-ORIGINAL SCHEMATIC ![image](https://user-images.githubusercontent.com/7136948/154051288-c07643e3-c5f3-43d8-a7fe-0fdbfc92d0d0.png)
-danhans42 SCHEMATIC ![image](https://user-images.githubusercontent.com/7136948/154298505-cca51805-bd69-4dc9-bcad-ec4a81bae033.png)
-
-
-
+In order to avoid misunderstandings @danhans42 has incorporated all of these differences into an "improved" schematic
+ ![image](https://user-images.githubusercontent.com/7136948/154367608-51be91f4-82fd-4fd0-8a0b-fa7903bd2e56.png)
 
 
 |MC Pin|Name|CPC Pin|Name|
