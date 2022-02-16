@@ -102,6 +102,12 @@ Usifac2 uses the following pins for CLC inputs:
     CLCIN6PPS = 0x0C;   //RB4->CLC1:CLCIN6   A5
 ```
 
+And for outputs
+```
+    RB3PPS = 0x001A    'CLC3OUT > RB3    ROMDIS (ROM READ)
+    RB0PPS = 0x001B    'CLC4OUT > RB0    READY (Enable PIC)
+```
+
 In the page 293 of the manual (https://ww1.microchip.com/downloads/en/DeviceDoc/PIC18F27-47Q10-Data-Sheet-40002043E.pdf) it is shown how the PPS are coded. For example, CLCIN6PPS is assigned to RB4 which is PORTB (01) pin 4 (100), being 01100 -> 0x0C
 
 ![image](https://user-images.githubusercontent.com/7136948/154055739-4c75364a-c230-466d-b25d-8d7b957ba9c2.png)
@@ -119,7 +125,9 @@ CLC3GLS0 = 0x01;  // First input negated
 CLC3GLS1 = 0x08;  // Second input
 CLC3GLS2 = 0x20;  // Third input
 CLC3GLS3 = 0x80;  // Fourth input
-CLC3CON  = 0x02;  // MODE 4-input AND; 
+CLC3CON  = 0x02;  // MODE 4-input AND;
+
+RB3PPS = 0x001A   // Output on RB3  ROMDIS
 ```
 
 The following image shows the circuit for CLC3![image](https://user-images.githubusercontent.com/7136948/154040581-1e1b2548-5491-4eb7-b54a-1cadf4d7ae56.png)
@@ -181,7 +189,7 @@ Pins in the microcontroller are grouped by ports, having PORT A,B,C and C 8bits 
 - PORTC(7..0) is connected to address high byte ROMEN,IORQ,A13..A8
 - PORTB(7..0) is connected to A15, A14, M1, A5, ROMDIS, TX, RX, READY
 
-Going back to the rom selection mechanism, we can use CLC2 to detect a write on **FD00** which computes AND(/IORQ,M1,/A13). In GCB, CLCs are accesible from ```CLCDATA.X```, for example the following code shows the ROM READ section.
+Going back to the rom selection mechanism, we can use CLC2 to detect a write on **FD00** which computes AND(/IORQ,M1,/A13). In GCB, CLCs are accesible from ```CLCDATA.X```, for example the following code shows the ROM READ section. **Take into account** that .X here starts from 0, thus CLCDATA.2 corresponds to CLC3, very funny, heh?
 
 ```
 ;###############################################-------------------code for ROM READ!###################################
