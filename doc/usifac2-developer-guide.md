@@ -14,6 +14,61 @@ USIFAC2 plugs in the expansion port which has access to the data and address bus
 ## Hardware
 USIFAC2 is composed of few components, a microcontroller PIC18F47Q10 (https://ww1.microchip.com/downloads/en/DeviceDoc/PIC18F27-47Q10-Data-Sheet-40002043E.pdf) , a diode and a couple of capacitors. 
 
+### Schematics
+Schematics can be found at https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACT6kqTr-sst-iqDeBnE9gRa?dl=0&preview=Usifac_ii_schematic.jpg
+
+It is **worth to note** that in a real USIFAC board (2nd green version with ch376s soldered), pin 37(RB4) on the microcontroller is connected to pin 13(A5) on the CPC while schematics do not show that connection. Thus, pin 7(RA5) and pin 37(RB4) are connected to the same signal. RB4 is used by CLCs while RA5 is used in PORTA. Not sure if this the reason to have duplicated pins.
+
+![image](https://user-images.githubusercontent.com/7136948/154051288-c07643e3-c5f3-43d8-a7fe-0fdbfc92d0d0.png)
+
+
+
+
+|MC Pin|Name|CPC Pin|Name|
+|----|-----|----|----|
+|  1 | RE3 | 40 | BRST, ICSP MCLR * |
+|  2 | RA0 | 18 | A0 |
+|  3 | RA1 | 17 | A1 |
+|  4 | RA2 | 16 | A2 |
+|  5 | RA3 | 15 | A3 |
+|  6 | RA4 | 14 | A4 |
+|  7 | RA5 | 13 | A5 |
+|  8 | RE0 | 39 | READY |
+|  9 | RE1 | -  | - |
+| 10 | RE2 | 32 | RD |
+| 11 | VDD | 27 | VCC |
+| 12 | VSS |  2 | GND |
+| 13 | RA7 | 11 | A7 |
+| 14 | RA6 | 12 | A6 |
+| 15 | RC0 | 10 | A8 |
+| 16 | RC1 |  9 | A9 |
+| 17 | RC2 |  8 | A10 |
+| 18 | RC3 |  7 | A11 |
+| 19 | RD0 | 26 D0 |
+| 20 | RD1 | 25 D1 |
+| 21 | RD2 | 24 D2 |
+| 22 | RD3 | 23 D3 |
+| 23 | RC4 |  6 A12 |
+| 24 | RC5 |  5 A13 |
+| 25 | RC6 | 31 IORQ |
+| 26 | RC7 | 42 ROMEN |
+| 27 | RD4 | 22 D4 |
+| 28 | RD5 | 21 D5 |
+| 29 | RD6 | 20 D6 |
+| 30 | RD7 | 19 D7 |
+| 31 | VSS | 2 | GND |
+| 32 | VDD | 27 | VCC |
+| 33 | RB0 | 39 | READY (with diode) |
+| 34 | RB1 | Serial  RX |
+| 35 | RB2 | Serial  TX |
+| 36 | RB3 | 43 | ROMDIS |
+| 37 | RB4 | 13 | A5 * |
+| 38 | RB5 |  29 |  M1 | 
+| 39 | RB6 |  4 | A14, ICSP CLK | 
+| 40 | RB7 |  3 | A15, ICSP DAT | 
+
+* Differences between schematics and real board.
+
 ### CLC
 PIC18F47Q10 provides CLC (Configurable Logic Cells) which is a kind of small PLD (Programmable Logic Device) inside the microcontroller. Thus, **no additional logic circuitry is needed** as it was done in the previous usifac version. CLC configuration is stored in RAM and can be changed during execution. CLC response time is the same for all the cells and it is around 10ns. More info about CLC can be found in https://microchipdeveloper.com/8bit:clc  
 
@@ -79,12 +134,6 @@ You can get this drawing with MPLAB Code Configurator (MCC) (https://microchipde
 
 We will see later how software uses these CLC signals.
 
-### Circuit schematics
-Schematics can be found at https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACT6kqTr-sst-iqDeBnE9gRa?dl=0&preview=Usifac_ii_schematic.jpg
-
-It is **worth to note** that in a real USIFAC board (2nd green version with ch376s soldered), pin 37(RB4) on the microcontroller is connected to pin 13(A5) on the CPC while schematics do not show that connection. Thus, pin 7(RA5) and pin 37(RB4) are connected to the same signal. RB4 is used by CLCs while RA5 is used in PORTA. Not sure if this the reason to have duplicated pins.
-
-![image](https://user-images.githubusercontent.com/7136948/154051288-c07643e3-c5f3-43d8-a7fe-0fdbfc92d0d0.png)
 
 ## Software
 
