@@ -7,6 +7,8 @@ You can find more info on the thread https://www.cpcwiki.eu/forum/amstrad-cpc-ha
 
 ikonsgr, the author of USIFAC2 has nicely shared the source code and schematics and it is available at https://www.dropbox.com/sh/ua4vgf6qjjmqlnq/AACT6kqTr-sst-iqDeBnE9gRa?dl=0
 
+From here I want to thank him for sharing this enormous work and encourage others to contribute to this project.
+
 
 ## Theory of operation
 USIFAC2 plugs in the expansion port which has access to the data and address buses among other signals. By listening to the bus it can communicate to the CPC. (TO BE COMPLETED)
