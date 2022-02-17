@@ -198,7 +198,11 @@ Pins in the microcontroller are grouped by ports, having PORT A,B,C and C 8bits 
 - PORTC(7..0) is connected to address high byte ROMEN,IORQ,A13..A8
 - PORTB(7..0) is connected to A15, A14, M1, A5, ROMDIS, TX, RX, READY
 
-Going back to the rom selection mechanism, we can use CLC2 to detect a write on **FD00** which computes AND(/IORQ,M1,/A13). In GCB, CLCs are accesible from ```CLCDATA.X```, for example the following code shows the ROM READ section. **Take into account** that .X here starts from 0, thus CLCDATA.2 corresponds to CLC3, very funny, heh?
+Going back to the rom selection mechanism, we can use CLC2 to detect a write on **FD00** which computes AND(/IORQ,M1,/A13). In GCB, CLCs are accesible from ```CLCDATA.X``` **Take into account** that .X here starts from 0, thus CLCDATA.2 corresponds to CLC3, very funny, heh?
+
+Code for CLC2 select ROM(**TO BE COMPLETED**)
+
+The following code shows the ROM READ section. 
 
 ```
 ;###############################################-------------------code for ROM READ!###################################
