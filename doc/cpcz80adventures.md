@@ -50,7 +50,7 @@ These are some of resources I used to on my way to write this.
 
 [Mixing asm and BASIC](#Mixing-asm-and-BASIC)
 
-[Jumpblock](#Jumpblock)
+[Jumpblock](#Firmware-Jumpblocks)
 
 [RSX](#RSX)
 
